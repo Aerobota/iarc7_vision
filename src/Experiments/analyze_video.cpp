@@ -35,7 +35,7 @@ while(true)
     imshow("source", frame);
     cv::Mat hsv_image;
     //Turning the original image into an hsv image because again, the internet told me to
-    //(But for real, this makes it possible to threshold out the roombas)
+    //(But for real, this makes it possible to threshold out the roombas by the red and green switches on top of them)
     cv::cvtColor(frame, hsv_image, cv::COLOR_BGR2HSV);
 
     // Threshold the HSV image, keep only the red pixels
@@ -59,8 +59,9 @@ while(true)
     cv::addWeighted(red_hue_image, 1.0, green_hue_range, 1.0, 0.0, all_roombas);
 
     Mat dst, cdst;
+    //Getting the "element" allows us to dilate the image
     Mat element = getStructuringElement( MORPH_RECT, Size( 2*DILATION_SIZE + 1, 2*DILATION_SIZE+1 ), Point( DILATION_SIZE, DILATION_SIZE ) );
-    //This makes lines thicker so that we get better at finding bigger contours
+    //This makes lines thicker so that we get better at finding bigger contours (the end result I was going for here was fewer contours, and it worked)
     dilate(all_roombas, all_roombas, element);
 
     //This takes the thresholded image and finds the outline of the objects within the image
@@ -103,12 +104,30 @@ while(true)
 
         //cv::rectangle(dst, Contourbound , Scalar( 100, 100, 100 ), 3 , CV_AA);
 
-        min_x = std::min(Contourbound.x, min_x);
-        max_x = std::max(Contourbound.x + Contourbound.width, max_x);
+        //Contourbound x,y makes up the top left corner of the rectangle 
+        min_x = std::min(Contourbound.x, min_x); 
+        max_x = std::max(Contourbound.x + Contourbound.width, max_x); 
         max_y = std::max(Contourbound.y + Contourbound.height, max_y);
         min_y = std::min(Contourbound.y, min_y);
 
         cout << Contourbound.x << "," << Contourbound.y << "," << Contourbound.x + Contourbound.width << "," << Contourbound.y + Contourbound.height << "\n";
+
+        //This is an attempt to separate contours by color (however, it fails horribly)
+        if(i % 3 == 1)
+        {
+            drawContours(dst, contours, i, Scalar(120,200,50), 2);
+        }
+
+        if(i % 3 == 2)
+        {
+            drawContours(dst, contours, i, Scalar(120,200,100), 2);
+        }
+
+        if(i % 3 == 0)
+        {
+            drawContours(dst, contours, i, Scalar(120,200,150), 2);
+        }
+
     }
 
 
@@ -119,6 +138,9 @@ while(true)
     {
         cout << "This ain't working :( \n";
         //This really means that the image was empty and I completely failed :( )
+        //This is a holdover from when I tried using HoughCircles on the output of the canny image.
+        //Though I am no longer trying the HoughCircles method (but now I am rethinking it as I wrtie this comment)
+        //This conditional statement is still useful in some way. 
     }
     else{
     imshow("rectangles", dst);
@@ -126,7 +148,6 @@ while(true)
 
     if(waitKey(30) >= 0) break;
 
-    //Taken from http://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_lines/hough_lines.html
 }
 
 
