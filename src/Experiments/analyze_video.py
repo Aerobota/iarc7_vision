@@ -20,9 +20,6 @@ while(True):
                             # that I know that they are all the same datatype. I was initially 
                             # using blank numpy arrays and they were failing. 
 
-    #So here are the alternatives 1. I include the above 3 lines, and lower_red_hue just ends up being equal to the hsv_image
-    #2. I don't and Python complains that "lower_red_hue_range is not defined".
-
     lower_red_hue_range = cv2.inRange(hsv_image, np.array([0, 100, 100]) , np.array([10, 200, 255]))
     upper_red_hue_range = cv2.inRange(hsv_image, np.array([160, 100, 100]) , np.array([179, 200, 255]))
     green_hue_range = cv2.inRange(hsv_image, np.array([40, 100, 20]) , np.array([80, 200, 255]))
@@ -31,7 +28,35 @@ while(True):
 
     all_roombas = cv2.addWeighted(all_roombas, 1, green_hue_range, 1, 0)
 
+    kernel = np.ones((5,5),np.uint8)
+    # Apparently the python version of OpenCV has some different options for dilation. Ended 
+    # up getting a little distracted messing around with them
+    all_roombas = cv2.dilate(all_roombas,kernel,iterations = 1)
+    opening = cv2.morphologyEx(all_roombas, cv2.MORPH_OPEN, kernel)
+
+    all_roombas = cv2.Canny(all_roombas, 50, 200)
+
+    contours, hierarchy = cv2.findContours(all_roombas, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+    max_x = 0;
+    max_y = 0;
+    min_x = 2500;
+    min_y = 2500;
+
+    for contour in contours:
+
+        x,y,w,h = cv2.boundingRect(contour)
+
+        min_x = min(min_x, x)
+        max_x = max(max_x, x + w)
+        min_y = min(min_y, y)
+        max_y = max(max_y, y + h)
+
+
+    cv2.rectangle(all_roombas ,(min_x, min_y),(max_x, max_y),(100,0,100),3)
+
     cv2.imshow('output', all_roombas)
+    cv2.imshow('output2', opening)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
