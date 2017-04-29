@@ -23,12 +23,15 @@ while(True):
     #So here are the alternatives 1. I include the above 3 lines, and lower_red_hue just ends up being equal to the hsv_image
     #2. I don't and Python complains that "lower_red_hue_range is not defined".
 
-    cv2.inRange(hsv_image, np.array([0, 100, 100]) , np.array([10, 200, 255]) , lower_red_hue_range)
-    cv2.inRange(hsv_image, np.array([160, 100, 100]) , np.array([179, 200, 255]), upper_red_hue_range)
+    lower_red_hue_range = cv2.inRange(hsv_image, np.array([0, 100, 100]) , np.array([10, 200, 255]))
+    upper_red_hue_range = cv2.inRange(hsv_image, np.array([160, 100, 100]) , np.array([179, 200, 255]))
+    green_hue_range = cv2.inRange(hsv_image, np.array([40, 100, 20]) , np.array([80, 200, 255]))
 
-    lower_red_hue_range =  cv2.addWeighted(lower_red_hue_range, 1, upper_red_hue_range, 1, 0)
+    all_roombas =  cv2.addWeighted(lower_red_hue_range, 1, upper_red_hue_range, 1, 0)
 
-    cv2.imshow('output', lower_red_hue_range)
+    all_roombas = cv2.addWeighted(all_roombas, 1, green_hue_range, 1, 0)
+
+    cv2.imshow('output', all_roombas)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
