@@ -22,11 +22,13 @@ while(True):
 
     lower_red_hue_range = cv2.inRange(hsv_image, np.array([0, 100, 100]) , np.array([10, 200, 255]))
     upper_red_hue_range = cv2.inRange(hsv_image, np.array([160, 100, 100]) , np.array([179, 200, 255]))
-    green_hue_range = cv2.inRange(hsv_image, np.array([40, 100, 20]) , np.array([80, 200, 255]))
+    green_hue_range = cv2.inRange(hsv_image, np.array([55, 50, 20]) , np.array([70, 70, 50]))
 
     all_roombas =  cv2.addWeighted(lower_red_hue_range, 1, upper_red_hue_range, 1, 0)
 
     all_roombas = cv2.addWeighted(all_roombas, 1, green_hue_range, 1, 0)
+
+    cv2.imshow('blobs', all_roombas)
 
     kernel = np.ones((5,5),np.uint8)
     # Apparently the python version of OpenCV has some different options for dilation. Ended 
@@ -56,7 +58,7 @@ while(True):
     cv2.rectangle(all_roombas ,(min_x, min_y),(max_x, max_y),(100,0,100),3)
 
     cv2.imshow('output', all_roombas)
-    cv2.imshow('output2', opening)
+    #cv2.imshow('output2', opening)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
