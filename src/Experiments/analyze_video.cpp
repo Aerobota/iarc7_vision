@@ -42,11 +42,11 @@ while(true)
     cv::Mat lower_red_hue_range, upper_red_hue_range;
     cv::Mat red_hue_image;
     cv::Mat green_hue_range;
-    cv::inRange(hsv_image, cv::Scalar(0, 100, 100), cv::Scalar(10, 200, 255), lower_red_hue_range);
-    cv::inRange(hsv_image, cv::Scalar(160, 100, 100), cv::Scalar(179, 200, 255), upper_red_hue_range);
+    cv::inRange(hsv_image, cv::Scalar(0, 80, 100), cv::Scalar(10, 255, 255), lower_red_hue_range);
+    cv::inRange(hsv_image, cv::Scalar(160, 100, 100), cv::Scalar(179, 255, 255), upper_red_hue_range);
 
     //Now keep only the green pixels from the source image
-    cv::inRange(hsv_image, cv::Scalar(40, 100, 20), cv::Scalar(80, 200, 255), green_hue_range); //(98,51,23) (147,54,40) (80,54,31) (104,45,23)
+    cv::inRange(hsv_image, cv::Scalar(55, 50, 20), cv::Scalar(70, 70, 50), green_hue_range); //(98,51,23) (147,54,40) (80,54,31) (104,45,23)
 
     //Do another blur to reduce noise (and again, the internet told me to and it seems to work)
     cv::GaussianBlur(red_hue_image, red_hue_image, cv::Size(9, 9), 2, 2);
