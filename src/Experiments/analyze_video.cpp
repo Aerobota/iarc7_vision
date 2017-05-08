@@ -63,6 +63,7 @@ while(true)
     Mat element = getStructuringElement( MORPH_RECT, Size( 2*DILATION_SIZE + 1, 2*DILATION_SIZE+1 ), Point( DILATION_SIZE, DILATION_SIZE ) );
     //This makes lines thicker so that we get better at finding bigger contours (the end result I was going for here was fewer contours, and it worked)
     dilate(all_roombas, all_roombas, element);
+    vim -r /home/ritesh/Documents/iarc/src/iarc7_vision/.git/COMMIT_EDITMSG
 
     //This takes the thresholded image and finds the outline of the objects within the image
     //The outline allows us to use findContours to get lines surrounding the blobs
