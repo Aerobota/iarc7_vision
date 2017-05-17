@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+#test commit
 
 DILATION_SIZE = 10 #This is a constant variable. Never write to it. 
                    #In C++ you would just declare it to be a const, but Python does not support that. 
