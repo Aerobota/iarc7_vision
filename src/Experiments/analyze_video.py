@@ -12,7 +12,7 @@ track_window = None
 ret = None
 roomba_found = False
 # ddepth = CV_16S;
-cap = cv2.VideoCapture("green_test.mp4"); #open the default camera
+cap = cv2.VideoCapture("red_test.mp4"); #open the default camera
 
 while(True):
 
@@ -22,18 +22,20 @@ while(True):
 
         # Capture frame-by-frame
         ret, frame = cap.read()
-        frame = cv2.medianBlur(frame, 3)
+        frame = cv2.medianBlur(frame, 3)    
         hsv_image = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
         h,s,v = cv2.split(hsv_image)
 
         cv2.imshow('original', frame)
 
+        cv2.imshow('saturation', s)
+
         s = cv2.inRange(s, 160, 180)
 
-        cv2.imshow('saturation filtered', s)
 
-        s = cv2.Canny(s, 50, 200)
+
+        s = cv2.Canny(s, 10, 50)
 
         cv2.imshow('Canny on saturation', s)
 
@@ -58,9 +60,11 @@ while(True):
         # Apparently the python version of OpenCV has some different options for dilation. 
         # Messed around with them a little and I think I got pretty close to the C++ version
         all_roombas = cv2.dilate(all_roombas,kernel,iterations = 1)
-        opening = cv2.morphologyEx(all_roombas, cv2.MORPH_OPEN, kernel)
+
 
         all_roombas = cv2.Canny(all_roombas, 50, 200)
+
+        opening = cv2.morphologyEx(all_roombas, cv2.MORPH_OPEN, kernel)
 
         # cv2.Laplacian(all_roombas, 165, all_roombas, kernel_size, scale, delta)
 
@@ -99,7 +103,7 @@ while(True):
         cv2.drawContours(all_roombas, contour_list,  -1, (255,0,0), 2)
         print len(contour_list)
 
-        cv2.imshow('output', all_roombas)
+        cv2.imshow('output', opening)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
