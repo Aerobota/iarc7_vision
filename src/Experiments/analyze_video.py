@@ -33,8 +33,6 @@ while(True):
 
         s = cv2.inRange(s, 160, 180)
 
-
-
         s = cv2.Canny(s, 10, 50)
 
         cv2.imshow('Canny on saturation', s)
