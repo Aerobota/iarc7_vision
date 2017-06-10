@@ -12,7 +12,7 @@ track_window = None
 ret = None
 roomba_found = False
 # ddepth = CV_16S;
-cap = cv2.VideoCapture("red_test.mp4"); #open the default camera
+cap = cv2.VideoCapture("green_test.mp4"); #open the default camera
 
 while(True):
 
@@ -51,83 +51,33 @@ while(True):
 
         all_roombas = cv2.addWeighted(all_roombas, 1, green_hue_range, 1, 0)
 
-        cv2.imshow('all', all_roombas)
 
         kernel = np.ones((5,5),np.uint8)
 
+        all_roombas = cv2.erode(all_roombas, None, iterations=2)
         # Apparently the python version of OpenCV has some different options for dilation. 
         # Messed around with them a little and I think I got pretty close to the C++ version
-        all_roombas = cv2.dilate(all_roombas,kernel,iterations = 1)
+        all_roombas = cv2.dilate(all_roombas,kernel,iterations = 3)
 
 
         all_roombas = cv2.Canny(all_roombas, 50, 200)
 
-        opening = cv2.morphologyEx(all_roombas, cv2.MORPH_OPEN, kernel)
-
-        # cv2.Laplacian(all_roombas, 165, all_roombas, kernel_size, scale, delta)
-
-        # cv2.imshow('laplace', all_roombas)
-
-        contours, hierarchy = cv2.findContours(all_roombas, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
-        max_x = 0;
-        max_y = 0;
-        min_x = 2500;
-        min_y = 2500;
-
-        for contour in contours:
-
-            x,y,w,h = cv2.boundingRect(contour)
-
-            min_x = min(min_x, x)
-            max_x = max(max_x, x + w)
-            min_y = min(min_y, y)
-            max_y = max(max_y, y + h)
-
-
-        cv2.rectangle(all_roombas ,(min_x, min_y),(max_x, max_y),(100,0,100),3)
-
-        contour_list = []
-
-        for contour in contours:
-
-            area = cv2.contourArea(contour)
-
-            if area > 250:
-
-                contour_list.append(contour)
-
-
-        cv2.drawContours(all_roombas, contour_list,  -1, (255,0,0), 2)
-        print len(contour_list)
-
-        cv2.imshow('output', opening)
-
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-        # if len(contour_list) == 2:
-            
-        #     x,y,w,h = cv2.boundingRect(contour_list[0])
-
-        #     track_window = (x,y,x+w,y+h)
-        #     ret, track_window = cv2.CamShift(all_roombas,track_window, term_crit)
-        #     cv2.ellipse(all_roombas, track_window, np.array([0, 0, 100]))
-        #     roomba_found = True
-
-        # cv2.imshow('output', all_roombas)
-
-
-    # elif roomba_found is True:
-    #     ret, frame = cap.read()
-
-    #     ret, track_window = cv2.CamShift(frame,track_window, term_crit)
-
-    #     cv2.ellipse(all_roombas, track_window, np.array([0, 0, 100])
-    #     cv2.imshow('output', all_roombas)
-
-
-        #cv2.imshow('output2', opening)
+         # detect circles in the image
+        circles = cv2.HoughCircles(all_roombas, cv2.cv.CV_HOUGH_GRADIENT, 1.2, 100)
+         
+        # ensure at least some circles were found
+        if circles is not None:
+            # convert the (x, y) coordinates and radius of the circles to integers
+            circles = np.round(circles[0, :]).astype("int")
+         
+            # loop over the (x, y) coordinates and radius of the circles
+            for (x, y, r) in circles:
+                # draw the circle in the output image, then draw a rectangle
+                # corresponding to the center of the circle
+                cv2.circle(all_roombas, (x, y), r, (0, 255, 0), 4)
+                cv2.rectangle(all_roombas, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1)
+         
+        cv2.imshow('all', all_roombas)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
