@@ -108,6 +108,7 @@ GridLineEstimator::GridLineEstimator(
 
 void GridLineEstimator::update(const cv::Mat& image, const ros::Time& time)
 {
+    ROS_WARN("Called update");
     if (last_filtered_position_(2)
             >= grid_estimator_settings_.min_extraction_altitude) {
         try {
@@ -580,12 +581,12 @@ void GridLineEstimator::get2dPosition(
 
     std::ostringstream para_stream;
     for (double d : para_wrapped_dists) para_stream << d << " ";
-    ROS_DEBUG_STREAM("GridLineEstimator parallel wrapped distances: "
+    ROS_INFO_STREAM("GridLineEstimator parallel wrapped distances: "
                   << para_stream.str());
 
     std::ostringstream perp_stream;
     for (double d : perp_wrapped_dists) perp_stream << d << " ";
-    ROS_DEBUG_STREAM("GridLineEstimator perpendicular wrapped distances: "
+    ROS_INFO_STREAM("GridLineEstimator perpendicular wrapped distances: "
                   << perp_stream.str());
 
     // Get estimates and variances for grid translation in
@@ -718,12 +719,13 @@ double GridLineEstimator::gridLoss(const std::vector<double>& wrapped_dists,
 void GridLineEstimator::processImage(const cv::Mat& image,
                                      const ros::Time& time) const
 {
+    ROS_WARN("Called processImage");
     const double height = last_filtered_position_(2);
 
     // Extract lines from image
     std::vector<cv::Vec2f> lines;
     getLines(lines, image, height);
-    ROS_DEBUG("Number of lines extracted: %lu", lines.size());
+    ROS_INFO("Number of lines extracted: %lu", lines.size());
 
     // Don't process further if we don't have any lines
     if (lines.size() == 0) return;
