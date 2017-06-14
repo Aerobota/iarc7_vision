@@ -234,8 +234,8 @@ class CameraProcessor(ImageRoombaFinder):
         self.tf_buffer.lookup_transform('map', 'bottom_camera_optical',
                                         rospy.Time(0), rospy.Duration(3.0))
 
-        rospy.Subscriber("/bottom_image_raw/image", Image, self.callback)
-        rospy.Subscriber("/bottom_image_raw/camera_info", CameraInfo,
+        rospy.Subscriber("/bottom_camera/camera/image_raw", Image, self.callback)
+        rospy.Subscriber("/bottom_camera/camera/camera_info", CameraInfo,
                          self.camera.fromCameraInfo)
         self.publisher = rospy.Publisher("/roombas", OdometryArray,
                                          queue_size=10)
