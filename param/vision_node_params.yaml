@@ -37,7 +37,7 @@ grid_estimator:
     line_rejection_angle_threshold: 0.262 # pi/12
 
     # Minimum altitude to run the detector
-    min_extraction_altitude: 0.0
+    min_extraction_altitude: 0.00
 
 grid_line_estimator:
     # Should we spit out a marker vector for the quad's estimated orientation?

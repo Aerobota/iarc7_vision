@@ -108,6 +108,7 @@ GridLineEstimator::GridLineEstimator(
 
 void GridLineEstimator::update(const cv::Mat& image, const ros::Time& time)
 {
+    ROS_ERROR("lfp %f", last_filtered_position_(2));
     if (last_filtered_position_(2)
             >= grid_estimator_settings_.min_extraction_altitude) {
         try {
@@ -202,7 +203,6 @@ void GridLineEstimator::getLines(std::vector<cv::Vec2f>& lines,
         cv::Mat image_sized;
         cv::Mat image_hsv;
         cv::Mat image_hsv_channels[3];
-
         cv::resize(image, image_sized, cv::Size(), scale_factor, scale_factor);
         cv::cvtColor(image_sized, image_hsv, CV_BGR2HSV);
         cv::split(image_hsv, image_hsv_channels);
@@ -236,6 +236,7 @@ void GridLineEstimator::getLines(std::vector<cv::Vec2f>& lines,
         cv::gpu::GpuMat gpu_image_hsv_channels[3];
 
         gpu_image.upload(image);
+        ROS_ERROR("Scale factor %f", scale_factor);
 
         cv::gpu::resize(gpu_image,
                         gpu_image_sized,
