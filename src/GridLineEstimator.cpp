@@ -873,6 +873,10 @@ void GridLineEstimator::processImage(const cv::Mat& image,
     camera_position.point.z = 0;
     tf2::doTransform(camera_position, camera_position, camera_to_lq_transform);
 
+    ROS_ERROR("cx %f cy %f cz %f", camera_position.point.x, camera_position.point.y, camera_position.point.z);
+    ROS_ERROR("px %f py %f pz %f", position_2d(0), position_2d(1), position_2d(2));
+    ROS_ERROR("height %f", height);
+
     Eigen::Vector3d position_3d {
         position_2d(0) - camera_position.point.x,
         position_2d(1) - camera_position.point.y,
