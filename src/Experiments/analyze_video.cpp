@@ -90,6 +90,16 @@ if(!cap.isOpened()) // check if we succeeded
 
         imshow("saturation", saturation);
 
+        // Need a waitkey here in order to be able to see anything, you dingus
+
+/*        Mat imgmat = imread("shelf.jpg");
+
+        Mat subImage(imgmat, cv::Rect(10, 10, 70, 100));*/
+
+        //Future plan - 
+
+
+
     }
 
 
