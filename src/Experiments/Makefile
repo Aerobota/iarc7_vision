@@ -111,29 +111,29 @@ DisplayImage/fast:
 	$(MAKE) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/build
 .PHONY : DisplayImage/fast
 
-analyze_video.o: analyze_video.cpp.o
-.PHONY : analyze_video.o
+testGHT.o: testGHT.cpp.o
+.PHONY : testGHT.o
 
 # target to build an object file
-analyze_video.cpp.o:
-	$(MAKE) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/analyze_video.cpp.o
-.PHONY : analyze_video.cpp.o
+testGHT.cpp.o:
+	$(MAKE) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/testGHT.cpp.o
+.PHONY : testGHT.cpp.o
 
-analyze_video.i: analyze_video.cpp.i
-.PHONY : analyze_video.i
+testGHT.i: testGHT.cpp.i
+.PHONY : testGHT.i
 
 # target to preprocess a source file
-analyze_video.cpp.i:
-	$(MAKE) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/analyze_video.cpp.i
-.PHONY : analyze_video.cpp.i
+testGHT.cpp.i:
+	$(MAKE) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/testGHT.cpp.i
+.PHONY : testGHT.cpp.i
 
-analyze_video.s: analyze_video.cpp.s
-.PHONY : analyze_video.s
+testGHT.s: testGHT.cpp.s
+.PHONY : testGHT.s
 
 # target to generate assembly for a file
-analyze_video.cpp.s:
-	$(MAKE) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/analyze_video.cpp.s
-.PHONY : analyze_video.cpp.s
+testGHT.cpp.s:
+	$(MAKE) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/testGHT.cpp.s
+.PHONY : testGHT.cpp.s
 
 # Help Target
 help:
@@ -144,9 +144,9 @@ help:
 	@echo "... DisplayImage"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... analyze_video.o"
-	@echo "... analyze_video.i"
-	@echo "... analyze_video.s"
+	@echo "... testGHT.o"
+	@echo "... testGHT.i"
+	@echo "... testGHT.s"
 .PHONY : help
 
 
